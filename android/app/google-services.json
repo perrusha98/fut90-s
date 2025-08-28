@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "133275186057",
+    "project_id": "elgoltv",
+    "storage_bucket": "elgoltv.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:133275186057:android:db5b27ebb6f2874e626758",
+        "android_client_info": {
+          "package_name": "com.fut90.apk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWTJ6r8WuGDDvK8qSTPdGk0oSkoojxScQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
