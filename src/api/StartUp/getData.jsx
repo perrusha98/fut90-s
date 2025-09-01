@@ -7,7 +7,7 @@ import ErrorScreen from "@api/screens/Error";
 import SplashScreen from "@api/screens/Splash";
 
 import { getVersion } from "react-native-device-info";
-import AdOpenHook from "@components/admob/adOpen";
+import AdOpenHook from "@hooks/admob/openAd/timeout";
 
 const AppStartUpScreen = () => {
   const { storeApiData, apiData } = useContext(ApiDataContext);
@@ -17,7 +17,7 @@ const AppStartUpScreen = () => {
   const [retry, setRetry] = useState(0);
 
   // const [apiURL, setApi] = useState(null); // Cambiar el estado inicial
-  const [apiURL, setApi] = useState("https://apis.donromans.com/fut-90.json?xsa"); 
+  const [apiURL, setApi] = useState("https://apis.donromans.com/fut-90.json"); 
 
   const appVersion = getVersion();
 

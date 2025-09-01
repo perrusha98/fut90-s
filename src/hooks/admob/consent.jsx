@@ -34,7 +34,6 @@ const RewardHook = () => {
     if (!timeoutStarted && consentFormLoaded) {
       setTimeout(() => {
         loadAndShowConsentForm();
-        console.log('LANZAR FORMULARIO');
       }, 5000);
       setTimeoutStarted(true);
     }

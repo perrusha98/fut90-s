@@ -20,7 +20,7 @@ const NavigationControls = ({
         style={[styles.arrowButton, !show && styles.disabledButton]}
         disabled={!show}>
         <Text style={[styles.arrowText, {color: textColor}]}>
-          <Icon name={iconName} size={iconSize} />
+          {show && <Icon name={iconName} size={iconSize} />}
         </Text>
       </TouchableOpacity>
     </View>

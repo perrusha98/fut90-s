@@ -7,12 +7,8 @@ import KeepAwake from 'react-native-keep-awake';
  */
 const useKeepAwake = (enabled = true) => {
   useEffect(() => {
-    // Solo activar si enabled es true
     if (enabled) {
-      // Activar keep awake cuando el componente se monta
       KeepAwake.activate();
-      
-      // Desactivar keep awake cuando el componente se desmonta
       return () => {
         KeepAwake.deactivate();
       };

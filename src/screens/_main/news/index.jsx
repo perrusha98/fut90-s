@@ -15,7 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 
 import ScreenLoading from "@screens/Loading/Screen";
-import AdMobBanner from "@components/admob/banner";
+import AdMobBanner from "@hooks/admob/banner";
 
 const RSSFeedScreen = () => {
   const [data, setData] = useState([]);

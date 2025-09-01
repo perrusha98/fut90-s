@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import AdMobBanner from '@components/admob/banner';
+import AdMobBanner from '@hooks/admob/banner';
 
 const NewsDetailScreen = ({ route }) => {
   const { title, contentEncoded, imageUrl } = route.params;

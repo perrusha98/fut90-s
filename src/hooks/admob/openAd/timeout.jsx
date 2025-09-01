@@ -1,4 +1,4 @@
-import useAppOpenAd from '@hooks/admob/open'; // Importar useAppOpenAd
+import useAppOpenAd from '@hooks/admob/openAd/load'; // Importar useAppOpenAd
 import React, { useEffect, useState } from 'react';
 
 import { View } from 'react-native'; // Importar View de react-native

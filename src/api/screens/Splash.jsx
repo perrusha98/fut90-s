@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import NumbersAnimation from '@components/NumbersAnimation';
-import LogoImage from './Logo/LogoImage';
+import NumbersAnimation from './utils/NumbersAnimation';
+import LogoImage from './logo';
 import LinearGradient from 'react-native-linear-gradient';
 
 const ScreenLoading = () => {

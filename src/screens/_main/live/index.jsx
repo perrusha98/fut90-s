@@ -1,18 +1,19 @@
 // Importaciones de librerías externas
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {WebView} from 'react-native-webview';
-
-// Importaciones de componentes personalizados
-import WebViewWithListener from './WebViewWithListener';
-import AdMobBanner from '@components/admob/banner';
-import AdOpenHook from '@components/admob/adOpen';
 
 // Importaciones de contexto y utilidades
 import ApiDataContext from '@api/StartUp/context';
 import useKeepAwake from '@utils/useKeepAwake';
-import checkOrientation from '@utils/checkOrientation';
-import {useImmersiveOnFocus} from '@hooks/useImmersiveOnFocus';
+import checkOrientation from '@utils/orientation/check';
+import Orientation from 'react-native-orientation-locker';
+import {useImmersiveOnFocus} from '@utils/useImmersiveOnFocus';
+
+// Importaciones de componentes personalizados
+import Panel from './panel/core';
+import AdMobBanner from '@hooks/admob/banner';
+import AdOpenHook from '@hooks/admob/openAd/timeout';
 
 const ChatWebView = ({url}) => {
   return (
@@ -28,10 +29,16 @@ const ChatWebView = ({url}) => {
 };
 
 const PanelScreen = ({}) => {
-  
-  // Hooks personalizados
-  useKeepAwake();
+  useKeepAwake(); // Mantener la pantalla activa
+
   useImmersiveOnFocus();
+
+  useEffect(() => {
+    Orientation.lockToLandscapeLeft();
+    return () => {
+      Orientation.lockToPortrait();
+    };
+  }, []);
 
   // Obtener datos del contexto y orientación
   const {isLandscape} = checkOrientation();
@@ -57,7 +64,6 @@ const PanelScreen = ({}) => {
   const handleUrlChange = url => {
     urlChangeCount += 1;
     if (urlChangeCount === 2) {
-      console.log('Cambio de URL detectado (segundo cambio):', url);
       setShowChat(true); // Cambiar a ChatWebView en el segundo cambio
     }
   };
@@ -65,7 +71,6 @@ const PanelScreen = ({}) => {
   return (
     <View style={styles.container}>
       {/* Anuncio de apertura */}
-      {adOpen && <AdOpenHook />}
 
       {/* Banner superior (solo en modo portrait) */}
       {!isLandscape && ad_top !== 'none' && <AdMobBanner bannerType={ad_top} />}
@@ -76,8 +81,9 @@ const PanelScreen = ({}) => {
             ? styles.landscapeContainer
             : styles.portraitContainer
         }>
+      {adOpen && <AdOpenHook />}
         {/* WebView principal */}
-        <WebViewWithListener
+        <Panel
           settings={apiData}
           onUrlChange={handleUrlChange}
           style={isLandscape ? styles.landscapeWebview : styles.webview}

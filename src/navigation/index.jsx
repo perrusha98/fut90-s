@@ -13,7 +13,7 @@ import analytics from '@react-native-firebase/analytics';
 
 // Screens
 import HomeScreen from '@screens/_main/home';
-import LiveScreen from '@screens/_main/panel';
+import LiveScreen from '@screens/_main/live';
 import ChatScreen from '@screens/_main/chat';
 import NewsScreen from '@screens/_main/news';
 import DetailScreen from '@screens/_main/news/PostDetail';
@@ -60,27 +60,7 @@ const NewsStacked = () => {
 };
 
 
-const LANDSCAPE_ROUTES = new Set([
-  'Live-Stack'
-]);
-
 function BottomTabs({currentRouteName}) {
-
-  // useEffect(() => {
-  //   // Limpia cualquier lock previo
-  //   Orientation.unlockAllOrientations();
-
-  //   if (LANDSCAPE_ROUTES.has(currentRouteName)) {
-  //     Orientation.lockToLandscape();
-  //   } else {
-  //     Orientation.lockToLandscape();
-  //   }
-
-  //   // No forzamos nada en cleanup: el próximo render/route aplicará lo correcto
-  //   return () => {
-  //     Orientation.unlockAllOrientations();
-  //   };
-  // }, [currentRouteName]);
 
   return (
     <Tab.Navigator

@@ -18,7 +18,6 @@ const WebViewWithListener = ({settings, onUrlChange}) => {
     ads: { InterstitialEach: interstitial, reward },
     custom_url: url,
   } = settings.screen_settings.live;
-  
 
   // Hooks personalizados
   const sendStatusVIP = status => {

@@ -5,7 +5,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const ErrorScreen = ({onRetry, errorDetails, retryNumber}) => {
-  console.log(retryNumber);
   const getMessage = () => {
     if (errorDetails) {
       if (errorDetails.code >= 500 && errorDetails.code < 600) {

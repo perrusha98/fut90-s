@@ -1,4 +1,3 @@
-import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -15,26 +14,45 @@ const UpdateScreen = ({settings}) => {
   };
 
   const settingsUpdate = settings.screen_settings.update;
+  const style = settingsUpdate.style || {};
+  
+  const logoSource = style.logo?.useExternal && style.logo?.imageUrl
+    ? { uri: style.logo.imageUrl }
+    : require('@assets/icon.png');
+
   return (
     <View style={styles.container}>
       <LinearGradient
-        colors={['#390000', '#000', '#390000']}
+        colors={style.colors.background.gradient}
         style={styles.background}
-        locations={[0.25, 0.5, 0.8]}
+        locations={style.colors.background.locations}
         start={{x: 1, y: 0}}
         end={{x: 0, y: 1}}
       />
       <View style={styles.content}>
-        <Image source={require('@assets/icon.png')} style={styles.logo} />
+        <Image 
+          source={logoSource} 
+          style={[
+            styles.logo,
+            {
+              borderColor: style.logo.borderColor,
+              borderWidth: style.logo.borderWidth,
+            }
+          ]} 
+        />
 
         <>
-          <Text style={styles.title}>{settingsUpdate.title}</Text>
-          <Text style={styles.message}>{settingsUpdate.description}</Text>
+          <Text style={[styles.title, { color: style.colors.title }]}>
+            {settingsUpdate.title}
+          </Text>
+          <Text style={[styles.message, { color: style.colors.description }]}>
+            {settingsUpdate.description}
+          </Text>
           {settingsUpdate.button_text !== '' ? (
             <TouchableOpacity
-              style={styles.button}
+              style={[styles.button, { backgroundColor: style.colors.button.background }]}
               onPress={() => openLink(settingsUpdate.button_url)}>
-              <Text style={styles.buttonText}>
+              <Text style={[styles.buttonText, { color: style.colors.button.text }]}>
                 {settingsUpdate.button_text}
               </Text>
             </TouchableOpacity>
@@ -50,7 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
   },
   background: {
     position: 'absolute',
@@ -70,17 +87,13 @@ const styles = StyleSheet.create({
     height: 120,
     marginBottom: 20,
     borderRadius: 100,
-    borderWidth: 3,
-    borderColor: '#e30000',
   },
   button: {
-    backgroundColor: '#e30000',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
-    color: '#000000',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -92,13 +105,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#e30000',
     marginBottom: 20,
     textAlign: 'center',
   },
   message: {
     fontSize: 16,
-    color: '#ffffff',
     textAlign: 'center',
     marginBottom: 30,
   },

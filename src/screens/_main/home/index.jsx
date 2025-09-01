@@ -3,7 +3,7 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import ApiDataContext from '@api/StartUp/context';
 
 import Notifications from '@hooks/notifications';
-import AdMobBanner from '@components/admob/banner';
+import AdMobBanner from '@hooks/admob/banner';
 import FeatEvent from '@components/blocks/banners/Carousel';
 import DayEvents from '@components/blocks/schedule/';
 import ShareButtons from '@components/blocks/buttons/share';
@@ -12,7 +12,7 @@ import MiniButtons from '@components/blocks/buttons/mini';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import AdConsent from '@hooks/admob/adConsent';
+import AdConsent from '@hooks/admob/consent';
 
 const HomeScreen = ({}) => {
 

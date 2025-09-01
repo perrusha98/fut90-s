@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Importamos la librería de iconos
-import Orientation from 'react-native-orientation-locker';
 
 const { width, height } = Dimensions.get("window");
 
