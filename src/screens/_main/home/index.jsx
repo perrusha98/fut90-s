@@ -3,7 +3,7 @@ import {View, StyleSheet, ScrollView} from 'react-native';
 import ApiDataContext from '@api/StartUp/context';
 
 import Notifications from '@hooks/notifications';
-import AdMobBanner from '@hooks/admob/banner';
+import AdBanner from '@hooks/admob/banner';
 import FeatEvent from '@components/blocks/banners/Carousel';
 import DayEvents from '@components/blocks/schedule/';
 import ShareButtons from '@components/blocks/buttons/share';
@@ -32,13 +32,13 @@ const HomeScreen = ({}) => {
         locations={[0.5, 9]}>
         <ScrollView nestedScrollEnabled showsVerticalScrollIndicator={false} style={{marginBottom: 16}}>
           {adSettings.top !== 'none' && (
-            <AdMobBanner bannerType={adSettings.top} />
+            <AdBanner size={adSettings.top} />
           )}
           <FeatEvent />
           <DayEvents settings={homeScreen} />
           <LargeButton buttons={homeScreen.buttons} />
           {adSettings.bottom !== 'none' && (
-            <AdMobBanner bannerType={adSettings.bottom} />
+            <AdBanner size={adSettings.bottom} />
           )}
           <ShareButtons />
         </ScrollView>

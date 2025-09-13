@@ -15,7 +15,7 @@ import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 
 import ScreenLoading from "@screens/Loading/Screen";
-import AdMobBanner from "@hooks/admob/banner";
+import AdBanner from "@hooks/admob/banner";
 
 const RSSFeedScreen = () => {
   const [data, setData] = useState([]);
@@ -191,7 +191,7 @@ const RSSFeedScreen = () => {
       )}
 
       <View style={{ maxWidth: "100%" }}>
-        <AdMobBanner bannerType="AnchorBanner" />
+        <AdBanner size="AnchorBanner" />
       </View>
     </View>
   );

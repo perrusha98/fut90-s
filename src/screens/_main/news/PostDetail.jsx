@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { WebView } from 'react-native-webview';
-import AdMobBanner from '@hooks/admob/banner';
+import AdBanner from '@hooks/admob/banner';
 
 const NewsDetailScreen = ({ route }) => {
   const { title, contentEncoded, imageUrl } = route.params;
@@ -108,7 +108,7 @@ const NewsDetailScreen = ({ route }) => {
       {contentEncoded && (
         <WebView source={{ html: htmlContent }} style={styles.webView} />
       )}
-      <AdMobBanner bannerType={"AnchorBanner"} />
+      <AdBanner size={"AnchorBanner"} />
     </View>
   );
 };

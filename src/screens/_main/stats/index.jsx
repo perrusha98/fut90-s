@@ -2,7 +2,7 @@ import { View, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { WebView } from "react-native-webview";
 import ScreenLoading from "@screens/Loading/Screen";
-import AdMobBanner from "@hooks/admob/banner";
+import AdBanner from "@hooks/admob/banner";
 
 const WebViewStats = () => {
   const [loading, setLoading] = useState(true);
@@ -129,7 +129,7 @@ const WebViewStats = () => {
       />
 
       <View style={{ maxWidth: "100%" }}>
-        <AdMobBanner bannerType="AnchorBanner" />
+        <AdBanner size="AnchorBanner" />
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
 import {View} from 'react-native';
 import {BannerAd, BannerAdSize, TestIds} from 'react-native-google-mobile-ads';
 
-const AdMobBanner = ({bannerType}) => {
+const AdBanner = ({size}) => {
   const BannerId = __DEV__
     ? TestIds.BANNER
     : 'ca-app-pub-4765178500146658/6562743535';
@@ -32,9 +32,9 @@ const AdMobBanner = ({bannerType}) => {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <BannerAd unitId={BannerId} size={getBannerSize(bannerType)} />
+      <BannerAd unitId={BannerId} size={getBannerSize(size)} />
     </View>
   );
 };
 
-export default AdMobBanner;
+export default AdBanner;
