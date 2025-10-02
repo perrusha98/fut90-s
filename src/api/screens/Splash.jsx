@@ -7,13 +7,17 @@ import SoundPlayer from 'react-native-sound-player';
 
 const ScreenLoading = () => {
 
-  useEffect(() => {
-    // Reproducir el primer sonido al iniciar
-    try {
-      SoundPlayer.playSoundFile('binary5', 'mp3');
-    } catch (error) {
-      console.log('Error al reproducir sonido inicial:', error);
-    }
+    useEffect(() => {
+    // Espera unos ms para asegurarte de que el contexto Android está listo
+    const timer = setTimeout(() => {
+      try {
+        SoundPlayer.loadSoundFile("binary5", "mp3"); // carga segura
+        SoundPlayer.play();
+      } catch (error) {
+        console.log("Error al reproducir sonido inicial:", error);
+      }
+    }, 300); // 300-500ms suele ser suficiente
+    return () => clearTimeout(timer);
   }, []);
  
   return (

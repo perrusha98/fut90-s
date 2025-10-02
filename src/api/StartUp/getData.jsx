@@ -28,7 +28,9 @@ const AppStartUpScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(apiURL);
+        const response = await fetch(apiURL, {
+          cache: 'no-store',
+        });
         if (!response.ok) {
           throw new Error(`Error del servidor: ${response.status}`);
         }
