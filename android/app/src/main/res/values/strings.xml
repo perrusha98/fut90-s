@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">FUT90</string>
+    <string name="facebook_app_id">1513916026404964</string>
+    <string name="facebook_client_token">1e3072f4d146b127aa92e2f52f379f35</string>
 </resources>

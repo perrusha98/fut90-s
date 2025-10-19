@@ -24,7 +24,7 @@ const useAppOpenAd = () => {
     }; 
 
     const handleAdFailedToLoad = (error) => {
-      console.error('Error al cargar el anuncio de App Open:', error);
+      // console.error('Error al cargar el anuncio de App Open:', error);
       setIsAdLoaded(false); // Si falla, indicamos que no está cargado
       setIsAdVisible(false); // Oculta el fondo blanco si falla la carga
     };
@@ -59,7 +59,7 @@ const useAppOpenAd = () => {
       setIsAdVisible(true); // Muestra el fondo blanco cuando se muestra el anuncio
       appOpenAd.current.show();
     } else {
-      console.log("El anuncio no está cargado aún");
+      // console.log("El anuncio no está cargado aún");
     }
   };
 

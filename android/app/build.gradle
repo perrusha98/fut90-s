@@ -83,8 +83,10 @@ android {
         applicationId "com.fut90.apk"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.1.8"
+        versionCode 9
+        versionName "1.1.9"
+        manifestPlaceholders = [ facebook_app_id: "@string/facebook_app_id" ]
+
     }
     signingConfigs {
         debug {

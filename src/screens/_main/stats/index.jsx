@@ -1,147 +1,199 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
-import React, { useEffect, useState } from "react";
-import { WebView } from "react-native-webview";
-import ScreenLoading from "@screens/Loading/Screen";
-import AdBanner from "@hooks/admob/banner";
+import React, { useState, useCallback, useMemo, memo } from 'react';
+import {
+  View,
+  StyleSheet,
+  Pressable,
+  Text,
+  Modal,
+  ScrollView,
+  Animated,
+} from 'react-native';
+import { WebView } from 'react-native-webview';
+import ScreenLoading from '@screens/Loading/Screen';
+
+const leagues = [
+  { id: 743, name: 'Liga MX' },
+  { id: 8, name: 'Premier League' },
+  { id: 82, name: 'Bundesliga' },
+  { id: 2, name: 'Champions' },
+  { id: 564, name: 'LaLiga' },
+  { id: 384, name: 'Serie A' },
+  { id: 301, name: 'Ligue 1' },
+  { id: 746, name: 'Copa MX' },
+  { id: 779, name: 'MLS' },
+];
+
+// 🔹 Componente memoizado para evitar re-render
+const LeagueOption = memo(({ league, onSelect, selectedLeague }) => {
+  const isActive = league.id === selectedLeague.id;
+  return (
+    <Pressable
+      style={[styles.option, isActive && { backgroundColor: '#00316922' }]}
+      disabled={isActive}
+      onPress={() => onSelect(league)}
+    >
+      <Text
+        style={[
+          styles.optionText,
+          isActive && { style: 'italic', fontWeight: 'bold', color: '#ffbf00ff' },
+        ]}
+      >
+        {league.name}
+        {isActive && ' *'}
+      </Text>
+    </Pressable>
+  );
+});
 
 const WebViewStats = () => {
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedLeague, setSelectedLeague] = useState(leagues[0]);
 
-  const htmlContent = `
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Tables Stats</title>
-        <style>
-            /* CSS reset */
-            html, body {
-                margin: 0;
-                padding: 0;
-                background: #390000;
-            }
+  const fadeAnim = useMemo(() => new Animated.Value(0), []);
 
-            a {
-                text-decoration: none;
-                color: #000;
-            }
+  const getWebViewUrl = useCallback(
+    leagueId =>
+      `https://www.scoreaxis.com/widget/standings-widget/${leagueId}?borderColor=%23ca1300&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23320500&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f`,
+    [],
+  );
 
-            /* Estilo del menú */
-            .menu {
-                background-color: #000;
-                color: #fff;
-                padding: 5px;
-                cursor: pointer;
-                display: inline-flex;
-                flex-direction: column;
-                width: 100%;
-                font-weight: bold;
-                text-transform: uppercase;
-                font-size: 18px;
-                position: relative;
-                height: 40px;
-                justify-content: center;
-            }
+  const handleLeagueSelect = useCallback(
+    league => {
+      if (league.id === selectedLeague.id) {
+        // Si se selecciona la misma liga, no hacer nada
+        setShowModal(false);
+        return;
+      }
+      setSelectedLeague(league);
+      setShowModal(false);
+      setLoading(true);
+      fadeAnim.setValue(0);
+    },
+    [selectedLeague, fadeAnim],
+  );
 
-            .menu ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-                display: none;
-                position: absolute;
-                background-color: #fff;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                font-size: 18px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            }
+  const handleModalToggle = useCallback(() => {
+    setShowModal(prev => !prev);
+  }, []);
 
-            .menu li {
-                padding: 8px 12px;
-                color: #000;
-                transition: color 0.2s ease-in-out;
-                border-bottom: 1px solid black;
-            }
-
-            /* Cambio de color al pasar el cursor por encima */
-            .menu li:hover {
-                color: #000;
-            }
-
-            /* Mostrar el menú cuando se pasa el cursor por encima */
-            .menu:hover ul {
-                display: block;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="gz-scores"></div>
-        <div class="gz-container clearflix">
-            <div class="menu">
-                Seleccionar Liga:
-                <ul>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/743?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Liga MX</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/8?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Premier League</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/82?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Bundesliga</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/2?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Champions</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/564?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">LaLiga</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/384?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Serie A</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/301?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Ligue 1</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/746?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">Copa MX</a></li>
-                    <li><a target="xcores" href="https://www.scoreaxis.com/widget/standings-widget/779?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f">MLS</a></li>
-                </ul>
-            </div>
-            <div id="scoreaxis-widget-8405f" data-reactroot="">
-                <iframe name="xcores" id="Iframe"
-                    src="https://www.scoreaxis.com/widget/standings-widget/743?borderColor=%23b12a2a&removeBorders=1&widgetHomeAwayTabs=0&teamsLogo=1&header=0&widgetRows=1,1,1,1,1,1,1,1,1,1&bodyBackground=%23390000&textColor=%23fff&lang=es&links=0&font=10&fontSize=18&inst=8405f"
-                    style="width:100%;border:none;transition:all 300ms ease"></iframe>
-                <script>
-                window.addEventListener("DOMContentLoaded", event => {
-                    window.addEventListener("message", event => {
-                        if (event.data.appHeight && "8405f" == event.data.inst) {
-                            let container = document.querySelector(
-                                "#scoreaxis-widget-8405f iframe");
-                            container && (container.style.height = parseInt(event.data.appHeight) + "px");
-                        }
-                    }, false);
-                });
-                </script>
-            </div>
-        </div>
-    </body>
-    </html>
-  `;
+  const handleWebViewLoad = useCallback(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 400,
+      useNativeDriver: true,
+    }).start();
+    setLoading(false);
+  }, [fadeAnim]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#390000" }}>
+    <View style={styles.container}>
+      {/* Loader a pantalla completa */}
       {loading && (
-        <View style={styles.loadingContainer}>
+        <View style={styles.loadingOverlay}>
           <ScreenLoading />
         </View>
       )}
 
-      <WebView
-        style={{ flex: 1, backgroundColor: "#390000" }}
-        source={{ html: htmlContent }}
-        onLoad={() => setLoading(false)}
-      />
+      {/* Dropdown con diseño mejorado */}
+      <Pressable style={styles.dropdown} onPress={handleModalToggle}>
+        <Text style={styles.dropdownText}>{selectedLeague.name}</Text>
+        <Text style={styles.dropdownIcon}>▼</Text>
+      </Pressable>
 
-      <View style={{ maxWidth: "100%" }}>
-        <AdBanner size="AnchorBanner" />
-      </View>
+      {/* Modal con estilo y animación */}
+      <Modal
+        visible={showModal}
+        transparent
+        animationType="fade"
+        onRequestClose={handleModalToggle}
+      >
+        <Pressable style={styles.modalBackdrop} onPress={handleModalToggle}>
+          <View style={styles.modalContainer}>
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{ paddingBottom: 30 }}
+            >
+              {leagues.map(league => (
+                <LeagueOption
+                  key={league.id}
+                  league={league}
+                  selectedLeague={selectedLeague}
+                  onSelect={handleLeagueSelect}
+                />
+              ))}
+            </ScrollView>
+          </View>
+        </Pressable>
+      </Modal>
+
+      {/* WebView con animación de fade */}
+      <Animated.View style={[styles.webviewContainer, { opacity: fadeAnim }]}>
+        <WebView
+          style={styles.webview}
+          source={{ uri: getWebViewUrl(selectedLeague.id) }}
+          onLoad={handleWebViewLoad}
+          startInLoadingState={false}
+        />
+      </Animated.View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  loadingContainer: {
+  container: { flex: 1, backgroundColor: '#2d0000ff' },
+
+  dropdown: {
+    backgroundColor: '#000000ff',
+    padding: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#690000ff',
+  },
+  dropdownText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+  },
+  dropdownIcon: {
+    color: '#bd3333ff',
+    fontSize: 16,
+  },
+
+  modalBackdrop: {
     flex: 1,
-    width: "100%",
-    position: "absolute",
-    zIndex: 999,
-    height: "100%",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'flex-end',
+  },
+  modalContainer: {
+    backgroundColor: '#6a0000ff',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+    paddingVertical: 10,
+  },
+  option: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderBottomColor: '#9f0000ff',
+    borderBottomWidth: 1,
+  },
+  optionText: {
+    fontSize: 18,
+    color: '#c2dfffff',
+  },
+
+  webviewContainer: { flex: 1 },
+  webview: { flex: 1, backgroundColor: '#000' },
+
+  loadingOverlay: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    zIndex: 1,
   },
 });
 
